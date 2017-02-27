@@ -14,6 +14,8 @@ type FlagValue interface {
 	HasChanged() bool
 	Name() string
 	Value() interface{}
+	ValueString() string
+	ValueType() string
 }
 
 // pflagValueSet is a wrapper around *pflag.ValueSet
@@ -48,4 +50,14 @@ func (p pflagValue) Name() string {
 // ValueString returns the value of the flag as a string.
 func (p pflagValue) Value() interface{} {
 	return p.flag.Value
+}
+
+// ValueString returns the value of the flag as a string.
+func (p pflagValue) ValueString() string {
+	return p.flag.Value.String()
+}
+
+// ValueType returns the type of the flag as a string.
+func (p pflagValue) ValueType() string {
+	return p.flag.Value.Type()
 }
