@@ -873,17 +873,7 @@ func (v *Viper) find(lcaseKey string) interface{} {
 	// PFlag override next
 	flag, exists := v.pflags[lcaseKey]
 	if exists && flag.HasChanged() {
-		switch flag.ValueType() {
-		case "int", "int8", "int16", "int32", "int64":
-			return cast.ToInt(flag.ValueString())
-		case "bool":
-			return cast.ToBool(flag.ValueString())
-		case "stringSlice":
-			s := strings.TrimPrefix(flag.ValueString(), "[")
-			return strings.TrimSuffix(s, "]")
-		default:
-			return flag.ValueString()
-		}
+		return flag.Value()
 	}
 	if nested && v.isPathShadowedInFlatMap(path, v.pflags) != "" {
 		return nil
@@ -940,17 +930,7 @@ func (v *Viper) find(lcaseKey string) interface{} {
 	// last chance: if no other value is returned and a flag does exist for the value,
 	// get the flag's value even if the flag's value has not changed
 	if flag, exists := v.pflags[lcaseKey]; exists {
-		switch flag.ValueType() {
-		case "int", "int8", "int16", "int32", "int64":
-			return cast.ToInt(flag.ValueString())
-		case "bool":
-			return cast.ToBool(flag.ValueString())
-		case "stringSlice":
-			s := strings.TrimPrefix(flag.ValueString(), "[")
-			return strings.TrimSuffix(s, "]")
-		default:
-			return flag.ValueString()
-		}
+		return flag.Value()
 	}
 	// last item, no need to check shadowing
 
